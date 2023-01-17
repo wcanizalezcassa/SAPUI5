@@ -5,6 +5,8 @@ sap.ui.define([
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
+     * @param {typeof sap.ui.model.Filter} Filter
+     * @param {typeof sap.ui.model.FilterOperator} FilterOperator
      */
     function (Controller,Filter,FilterOperator) {
         "use strict";
@@ -70,6 +72,15 @@ sap.ui.define([
                 var oModel = this.getView().getModel();
                 oModel.setProperty("/EmployeeId", "");
                 oModel.setProperty("/CountryKey", "");
+
+            },
+
+            showPostalCode: function(oEvent) {
+                var itemPress = oEvent.getSource();
+                var oContext = itemPress.getBindingContext();
+                var objectContext = oContext.getObject();
+
+                sap.m.MessageToast.show(objectContext.PostalCode);
 
             },
 
