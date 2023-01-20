@@ -13,51 +13,45 @@ sap.ui.define([
 
         return Controller.extend("logali.employees.controller.MainView", {
             onAfterRendering: function () {
-                var oJSONModel = new sap.ui.model.json.JSONModel();
+                
                 var oView = this.getView();
-                var i18nBundle = oView.getModel("i18n").getResourceBundle();
+                var oJSONModelEmpl = new sap.ui.model.json.JSONModel();
+             //   var i18nBundle = oView.getModel("i18n").getResourceBundle();
+                oJSONModelEmpl.loadData("./localService/mockdata/Employees.json", false);
+            //    oJSONModel.attachRequestCompleted(function (oEventModel){
+            //        console.log(JSON.stringify(oJSONModel.getData()));
+             //   });
+                oView.setModel(oJSONModelEmpl, "jsonEmployees");
 
-                // var oJSON = {
-                //     employeeId: "12345",
-                //     countryKey: "UK",
-                //     listCountry: [
-                //         {
-                //             key: 'US',
-                //             text: i18nBundle.getText("countryUS")
-                //         },
-                //         {
-                //             key: 'UK',
-                //             text: i18nBundle.getText("countryUK")
-                //         },
-                //         {
-                //             key: 'ES',
-                //             text: i18nBundle.getText("countryES")
-                //         }
+                var oJSONModelCountries = new sap.ui.model.json.JSONModel();
+                oJSONModelCountries.loadData("./localService/mockdata/Countries.json", false);
+                oView.setModel(oJSONModelCountries, "jsonCountries");
 
-                //     ]
-                // };
+                var oJSONModelConfig = new sap.ui.model.json.JSONModel({
+                    visibleID: true,
+                    visibleName: true,
+                    visibleCountry:true,
+                    visibleCity: false,
+                    visibleBtnShowCity: true,
+                    visibleBtnHideCity:false
 
-                // oJSONModel.setData(oJSON);
-                oJSONModel.loadData("./localService/mockdata/Employees.json", false);
-                oJSONModel.attachRequestCompleted(function (oEventModel){
-                    console.log(JSON.stringify(oJSONModel.getData()));
                 });
-                oView.setModel(oJSONModel);
+                oView.setModel(oJSONModelConfig, "jsonConfig");
 
             },
 
             onFilter: function () {
-                var oJSON = this.getView().getModel().getData();
+                var oJSONCountries = this.getView().getModel("jsonCountries").getData();
                 var filters = [];
 
-                if (oJSON.EmployeeId !== "") {
-                    filters.push(new Filter("EmployeeID", FilterOperator.EQ, oJSON.EmployeeId));
+                if (oJSONCountries.EmployeeId !== "") {
+                    filters.push(new Filter("EmployeeID", FilterOperator.EQ, oJSONCountries.EmployeeId));
                 } else {
                     
                 }
 
-                if (oJSON.CountryKey !== "") {
-                    filters.push(new Filter("Country", FilterOperator.EQ, oJSON.CountryKey));
+                if (oJSONCountries.CountryKey !== "") {
+                    filters.push(new Filter("Country", FilterOperator.EQ, oJSONCountries.CountryKey));
                 } else {
                     
                 }
@@ -69,7 +63,7 @@ sap.ui.define([
             },
 
             onClearFilter: function(){
-                var oModel = this.getView().getModel();
+                var oModel = this.getView().getModel("jsonCountries");
                 oModel.setProperty("/EmployeeId", "");
                 oModel.setProperty("/CountryKey", "");
 
@@ -77,7 +71,7 @@ sap.ui.define([
 
             showPostalCode: function(oEvent) {
                 var itemPress = oEvent.getSource();
-                var oContext = itemPress.getBindingContext();
+                var oContext = itemPress.getBindingContext("jsonEmployees");
                 var objectContext = oContext.getObject();
 
                 sap.m.MessageToast.show(objectContext.PostalCode);
@@ -98,6 +92,19 @@ sap.ui.define([
                     this.byId("labelCountry").setVisible(false);
                     this.byId("slCountry").setVisible(false);
                 };
+            }, 
+
+            onShowCity : function (){
+                var oJSONModelConfig = this.getView().getModel("jsonConfig");
+                oJSONModelConfig.setProperty("/visibleCity",true);
+                oJSONModelConfig.setProperty("/visibleBtnShowCity",false);
+                oJSONModelConfig.setProperty("/visibleBtnHideCity",true);
+            },
+            onHideCity : function(){
+                var oJSONModelConfig = this.getView().getModel("jsonConfig");
+                oJSONModelConfig.setProperty("/visibleCity",false);
+                oJSONModelConfig.setProperty("/visibleBtnShowCity",true);
+                oJSONModelConfig.setProperty("/visibleBtnHideCity",false);
             }
         });
     });
