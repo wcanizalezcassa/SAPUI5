@@ -1,25 +1,25 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
     <Panel>
-        <Button id="btnShowCity" text="{i18n>showCity}" visible="{jsonConfig>/visibleBtnShowCity}" press="onShowCity" />
-        <Button id="btnHideCity" text="{i18n>hideCity}" visible="{jsonConfig>/visibleBtnHideCity}" press="onHideCity" />
-        <Table id="tableEmployee" items="{jsonEmployees>/}">
+        <Button id="btnShowCity" text="{i18n>showCity}" visible="{jsonModelConfig>/visibleBtnShowCity}" press="onShowCity" />
+        <Button id="btnHideCity" text="{i18n>hideCity}" visible="{jsonModelConfig>/visibleBtnHideCity}" press="onHideCity" />
+        <Table id="tableEmployee" items="{odataNorthwind>/Employees}">
             <columns>
-                <Column visible="{jsonConfig>/visibleID}">
+                <Column visible="{jsonModelConfig>/visibleID}">
                     <header>
                         <Label text="{i18n>tableId}" />
                     </header>
                 </Column>
-                <Column visible="{jsonConfig>/visibleName}">
+                <Column visible="{jsonModelConfig>/visibleName}">
                     <header>
                         <Label text="{i18n>tableName}" />
                     </header>
                 </Column>
-                <Column visible="{jsonConfig>/visibleCountry}">
+                <Column visible="{jsonModelConfig>/visibleCountry}">
                     <header>
                         <Label text="{i18n>tableCountry}" />
                     </header>
                 </Column>
-                <Column visible="{jsonConfig>/visibleCity}">
+                <Column visible="{jsonModelConfig>/visibleCity}">
                     <header>
                         <Label text="{i18n>tableCity}" />
                     </header>
@@ -33,10 +33,10 @@
             <items>
                 <ColumnListItem type="Navigation" press="showEmployee">
                     <cells>
-                        <Label text="{jsonEmployees>EmployeeID}" />
-                        <Label text="{jsonEmployees>LastName}, {jsonEmployees>FirstName}" />
-                        <Label text="{jsonEmployees>Country}" />
-                        <Label text="{jsonEmployees>City}" />
+                        <Label text="{odataNorthwind>EmployeeID}" />
+                        <Label text="{odataNorthwind>LastName}, {odataNorthwind>FirstName}" />
+                        <Label text="{odataNorthwind>Country}" />
+                        <Label text="{odataNorthwind>City}" />
                         <core:Icon src="sap-icon://show" press="showOrders"></core:Icon>
                     </cells>
                 </ColumnListItem>
